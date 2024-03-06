@@ -1,0 +1,11 @@
+{
+  "name": "youtube-website",
+  "version": "1.0.0",
+  "description": "this is a youtube wesite",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "karan samrat",
+  "license": "ISC"
+}
