@@ -15,4 +15,5 @@ const connectDB = async () => {connectDB
 export default connectDB
 
 // clg connectionInstance and see the result in console
+// THIS COMMENT IS ADDED
 
