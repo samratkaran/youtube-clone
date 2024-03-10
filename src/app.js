@@ -19,6 +19,11 @@ app.use(cookieParser())
 
 import userRouter from "./routes/user.routes.js"
 
+// route declarations
+
+app.use("/api/v1/users", userRouter)
+
+// this is how routes work first will be https:localhost:3000/api/v1/users/register or any thing fisrt will be user so the all controll have user.routes.js file now 
 
 
 
