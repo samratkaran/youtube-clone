@@ -31,7 +31,7 @@ const registerUSer = asyncHandler(async (req ,res)=>{
       throw new ApiError(400 , "all fields are required")
     }
 
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
       $or:[{username},{email}]
     })
     //this code will check the username and email it is new so ask to chatGPT
@@ -39,16 +39,23 @@ const registerUSer = asyncHandler(async (req ,res)=>{
     if (existedUser) {
       throw new ApiError(409 , "user alredy found ")
     }
+    // this is old code and it has now changes by ChatGPT
 
-    const avtarLocalPath = req.files?.avatar[0]?.path;
 
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    if (!avtarLocalPath) {
-      throw new ApiError(400 , "avtar file is required")
+    const avatarLocalPath = (req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0) ? req.files.avatar[0].path : undefined;
+    //const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
+    
+    if (!avatarLocalPath) {
+        throw new ApiError(400, "avatar path is required");
     }
 
-    const avtar = await uploadOnCloudinary(avtarLocalPath)
+    const avtar = await uploadOnCloudinary(avatarLocalPath)
 
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
