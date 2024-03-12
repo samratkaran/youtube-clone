@@ -55,17 +55,17 @@ const registerUSer = asyncHandler(async (req ,res)=>{
         throw new ApiError(400, "avatar path is required");
     }
 
-    const avtar = await uploadOnCloudinary(avatarLocalPath)
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
 
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-    if (!avtar) {
+    if (!avatar) {
       throw new ApiError(400 , "avtar file is required")
     }
 
     const user  = await User.create({
       fullname,
-      avtar:avtar.url,
+      avatar:avatar.url,
       coverImage:coverImage?.url || "",
       //we used this cause cover image is not required
       email,
