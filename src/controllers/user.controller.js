@@ -70,7 +70,7 @@ const registerUSer = asyncHandler(async (req ,res)=>{
       //we used this cause cover image is not required
       email,
       password,
-      username:username.toLoweCase()
+      username:username.toLowerCase()
     })
 
     const createdUser = await User.findById(user._id).select(
