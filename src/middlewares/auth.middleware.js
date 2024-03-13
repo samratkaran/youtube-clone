@@ -1,9 +1,12 @@
-import { User } from "../models/User.model";
-import { ApiError } from "../utils/ApiErrror";
-import { asyncHandler } from "../utils/asyncHandler";
-import jwt from "json-web-token";
+import { User } from "../models/User.model.js";
+import { ApiError } from "../utils/ApiErrror.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import jwt from "jsonwebtoken"
 
-export const verfiyJWT = asyncHandler(async (req, res, next) => {
+// sometime we do not use res so in that we use _
+
+export const verfiyJWT = asyncHandler(async (req, _, next) => {
+  
 try {
     const token =
       req.cookies?.accessToken ||

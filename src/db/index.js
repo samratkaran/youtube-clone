@@ -12,7 +12,7 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-export default connectDB
+export default connectDB 
 
 // clg connectionInstance and see the result in console
 // THIS COMMENT IS ADDED
