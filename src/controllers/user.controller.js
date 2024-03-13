@@ -226,8 +226,8 @@ const refreshAccessToken = asyncHandler(async(req ,res)=>{
      }
     //  check why option is not working
     return res
-    .status("accessToken", accessToken)
-    .cookie("refreshToken", newRefreshToken)
+    .status("accessToken", accessToken ,options)
+    .cookie("refreshToken", newRefreshToken ,options)
     .json(
       new ApiResponse(200,{accessToken , refreshToken: newRefreshToken}, "access toekn refreshed" )
     )
