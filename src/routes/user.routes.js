@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { registerUSer } from "../controllers/user.controller.js";
+import { logOutUser, loginUser, registerUSer } from "../controllers/user.controller.js";
 import {upload} from "../middlewares/multer.middleware.js"
+import { verfiyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -17,5 +18,12 @@ router.route("/register").post(
     //here we used multer for upload file and avtaar just before registerUSer cause it is a middleware
   ]),
   registerUSer)
+
+  router.route("/login").post(loginUser)
+
+
+  // secured routers
+
+  router.route("/logout").post(verfiyJWT, logOutUser)
 
 export default router;
