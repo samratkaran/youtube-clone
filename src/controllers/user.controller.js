@@ -224,7 +224,7 @@ const refreshAccessToken = asyncHandler(async(req ,res)=>{
       httpOnly: true,
       secure: true,
      }
-    //  check wy 
+    //  check why option is not working
     return res
     .status("accessToken", accessToken)
     .cookie("refreshToken", newRefreshToken)
