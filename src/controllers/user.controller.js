@@ -15,7 +15,8 @@ const genrateAcessAndRefreshTokens = async (userId) => {
 
     return {accessToken , refreshToken}
 
-    //this code also copy and paste with push cause today already had 9 commits
+   //this small user have same prop as the User that we are getting from models so when we use user.refreshToken = refreshToken the value of refreshToken will add into it cause it is a object 
+
 
 
   } catch (error) {
@@ -111,8 +112,7 @@ const registerUSer = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse(200, createdUser, "user register successful"));
-});
-// login user
+}); 
 
 const loginUser = asyncHandler(async (req, res) => {
   // req body => data
@@ -120,7 +120,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // find the user
   // password check
   // acess and refresh token
-  // send token in form of coockes
+  // send token in form of cookie s
 
   const { email, username, password } = req.body;
   if (!username || !email) {
@@ -144,9 +144,10 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
 
-const {refreshToken , accessToken}  = await genrateAcessAndRefreshTokens(user._id)
 
- const loggedInUser  = await User.findOne(user._id).select("-password , -refreshToken")
+ const {refreshToken , accessToken}  = await genrateAcessAndRefreshTokens(user._id)
+
+ const loggedInUser  = await User.findById(user._id).select("-password  -refreshToken")
 
  const options ={
   httpOnly: true,
@@ -161,7 +162,6 @@ const {refreshToken , accessToken}  = await genrateAcessAndRefreshTokens(user._i
     user:loggedInUser , accessToken , refreshToken
   }, "user logged in successfully")
  )
-// ----------------------------
 
 
 });
@@ -188,7 +188,6 @@ const logOutUser = asyncHandler(async (req , res)=>{
 
 })
 
-// logout added and need to be push tomorrow
 
 
 export { registerUSer, loginUser , logOutUser };
