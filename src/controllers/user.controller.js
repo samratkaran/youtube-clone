@@ -143,11 +143,24 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "password incorrect");
   }
 
-  
 
+const {refreshToken , accessToken}  = await genrateAcessAndRefreshTokens(user._id)
 
+ const loggedInUser  = await User.findOne(user._id).select("-password , -refreshToken")
 
-//  --------------------------------------
+ const options ={
+  httpOnly: true,
+  sescure: true,
+ }
+ return res
+ .status(200)
+ .cookie("acessToken" ,accessToken , options)
+ .cookie("refreshToken" ,refreshToken , options)
+ .json(
+  new ApiResponse(200 , {
+    user:loggedInUser , accessToken , refreshToken
+  }, "user logged in successfully")
+ )
 // ----------------------------
 
 
