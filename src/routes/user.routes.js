@@ -25,5 +25,7 @@ router.route("/register").post(
   // secured routers
 
   router.route("/logout").post(verfiyJWT, logOutUser)
+  
+  // in this route we can see that how middleware is work we use verifyjwt as a middle warre just befrore using loogout and in verifyjwt we passed next() that will go to logoutuser after completeing its task if we want to use multiple middelware so we just use next() at them in the bottom ex:- royter.route("/logout").post(verfityjwt , verifyuser , logoutUser)
 
 export default router;

@@ -151,11 +151,11 @@ const loginUser = asyncHandler(async (req, res) => {
 
  const options ={
   httpOnly: true,
-  sescure: true,
+  secure: true,
  }
  return res
  .status(200)
- .cookie("acessToken" ,accessToken , options)
+ .cookie("accessToken" ,accessToken , options)
  .cookie("refreshToken" ,refreshToken , options)
  .json(
   new ApiResponse(200 , {
@@ -169,6 +169,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const logOutUser = asyncHandler(async (req , res)=>{
   await User.findByIdAndUpdate(req.user._id ,{
     $set:{refreshToken:undefined}
+    // we have access of the req.user by middleware jwt that we used you can also check in route that middelware
 
   },{
     new:true
@@ -176,7 +177,7 @@ const logOutUser = asyncHandler(async (req , res)=>{
 
   const options ={
     httpOnly: true,
-    sescure: true,
+    secure: true,
    }
    return res
    .status(200)
@@ -184,7 +185,7 @@ const logOutUser = asyncHandler(async (req , res)=>{
    .clearCookie("refreshToken" ,options)
    .json(new ApiResponse(200 ,{} ,"user logged Out"))
 
-  //we have access of the user by middleware jwt that we used you can also check in route that middelware
+ 
 
 })
 
