@@ -346,29 +346,25 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     throw ApiError(400, "username is missing");
   }
   const channel = await User.aggregate([
-    {
-      $match: {
+    { $match: {
         username: username?.toLowerCase(),
       },
     },
-    {
-      $lookup: {
+    { $lookup: {
         from: "subscriptions",
         localField: "_id",
         foreignField: "channel",
         as: "subscribers",
       },
     },
-    {
-      $lookup:{
+    { $lookup:{
         from: "subscriptions",
         localField: "_id",
         foreignField: "subscriber",
         as: "subscribedTo ",
       }
     },
-    {
-      $addFields:{
+    { $addFields:{
         subscriberCount:{
         $size:"$subscribers",
         },
@@ -377,19 +373,16 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         },
         isSubsCribed:{
           $cond:{
-            if:{$in:[req.user?._id , "subscribers.subscriber"] },
+            if:{$in:[req.user?._id , "$subscribers.subscriber"] },
             then:true,
             else:false
 
             // in this subscribers come from $lookup and subscriber come form subscription model
           }
         }
-
-
       }
     },
-    {
-      $project:{
+    {  $project:{
         fullname:1,
         username:1,
         subscriberCount:1,
