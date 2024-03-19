@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { response } from "express";
+import mongoose from "mongoose";
 
 const genrateAcessAndRefreshTokens = async (userId) => {
   try {
@@ -415,6 +416,44 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
   // aggrigate pipelines take array and object furthur array
 });
 
+const getWatchHistory = asyncHandler(async (req, res) => {
+  const user  = await User.aggregate([
+    {
+      $match:{
+
+        _id: new mongoose.Types.ObjectId(req.user._id)
+
+
+      }
+    },
+    { $lookup:{
+        from:"videos",
+        localField:"watchHistory",
+        foreignField:"_id",
+        as: "watchHistory",
+        pipeline:[
+          { $lookup:{
+              from:"users",
+              localField:"owner",
+              foreignField:"_id",
+              as: "owner",
+              pipeline:[
+                {
+                  $project:{
+                    username:1,
+                    avatar:1
+                  }
+                }
+              ]
+
+            }
+          }
+        ]
+      }
+    }
+  ])
+})
+
 export {
   registerUSer,
   loginUser,
@@ -426,4 +465,5 @@ export {
   updateUserAvatar,
   updateUserCoverImage,
   getUserChannelProfile,
+  getWatchHistory
 };
