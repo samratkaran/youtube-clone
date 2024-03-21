@@ -285,7 +285,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "account detail updated successfully"));
 });
-// in update account detail we can also add multiple field as now i am just adding full name and email
+// in update account detail we can also add multiple field as now i am just adding full name and
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.file?.path;
@@ -345,8 +345,9 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
   if (!username?.trim()) {
-    throw ApiError(400, "username is missing");
+    throw new ApiError(400, "username is missing");
   }
+
   const channel = await User.aggregate([
     {
       $match: {
@@ -366,54 +367,50 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         from: "subscriptions",
         localField: "_id",
         foreignField: "subscriber",
-        as: "subscribedTo ",
+        as: "subscribedTo",
       },
     },
     {
       $addFields: {
-        subscriberCount: {
+        subscribersCount: {
           $size: "$subscribers",
         },
-        channelsSubscribeToCount: {
+        channelsSubscribedToCount: {
           $size: "$subscribedTo",
         },
-        isSubsCribed: {
+        isSubscribed: {
           $cond: {
             if: { $in: [req.user?._id, "$subscribers.subscriber"] },
             then: true,
             else: false,
-
-            // in this subscribers come from $lookup and subscriber come form subscription model
           },
         },
       },
     },
     {
       $project: {
-        fullname: 1,
+        fullName: 1,
         username: 1,
-        subscriberCount: 1,
-        channelsSubscribeToCount: 1,
-        isSubsCribed: 1,
+        subscribersCount: 1,
+        channelsSubscribedToCount: 1,
+        isSubscribed: 1,
         avatar: 1,
         coverImage: 1,
         email: 1,
-
-        // pipelines chnages
+        watchHistory:1
       },
     },
   ]);
 
   if (!channel?.length) {
-    throw new ApiError(404, "channel does not exist");
+    throw new ApiError(404, "channel does not exists");
   }
-  return res
-    .stauts(200)
-    .json(
-      new ApiResponse(200, channel[0], "user channel fetched successfully")
-    );
 
-  // aggrigate pipelines take array and object furthur array
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, channel[0], "User channel fetched successfully")
+    );
 });
 
 const getWatchHistory = asyncHandler(async (req, res) => {
@@ -462,7 +459,7 @@ const getWatchHistory = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        user[0].watchHistory,
+        user[0].WatchHistory,
         "watch history featch successfully"
       )
     );
