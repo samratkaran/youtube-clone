@@ -37,7 +37,7 @@ router.route("/register").post(
 
   router.route("/logout").post(verfiyJWT, logOutUser)
   router.route("/refreshtoken").post(refreshAccessToken)
-  router,router("/change-password").post(verfiyJWT , changeCurrentPassword)
+  router.route("/change-password").post(verfiyJWT , changeCurrentPassword)
   router.route("/current-user").get(verfiyJWT , getCurrentUser)
   router.route("/update-accout").patch(verfiyJWT  ,updateAccountDetails)
   router.route("/update-avatar").patch(verfiyJWT , upload.single("avatar") , updateUserAvatar)
